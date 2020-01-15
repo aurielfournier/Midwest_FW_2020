@@ -1,5 +1,5 @@
 ### -- Introduction and refreshers for R
-### -- https://github.com/aurielfournier/AOS19AK
+### -- https://github.com/aurielfournier/Midwest_FW_2020
 
 #######################################
 ### -- Necessary packages
