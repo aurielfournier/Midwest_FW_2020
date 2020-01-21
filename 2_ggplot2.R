@@ -366,3 +366,13 @@ left <- plot_grid(one, two, nrow=2, align="hv")
 ggsave(left, file="~/../Desktop/left.jpeg", 
        height=4, width=4, units="cm", dpi=600)
 
+
+########################################
+## Challenge
+#######################################
+
+# Create a two charts, of your choice, with themes that are aesthetically pleasing to you
+# combine the two charts into one figure using plot_grid
+# save the plot to your desktop
+
+
