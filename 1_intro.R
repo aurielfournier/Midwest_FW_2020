@@ -26,6 +26,8 @@ ebird <- read.csv("eBird_workshop.csv")
 
 # Explain how to leave comments 
 
+View(ebird)
+
 #########################
 ### -- Filtering
 #########################
@@ -194,6 +196,28 @@ inner_join(ebird1, ebird2, by=c("year","species","state")) %>% head()
 #####################################
 ## CHALLENGE
 #####################################
+
+## create two datasets, one with data only from Illinois, with the state, species, presence and year columns. 
+# the other with data only from 2008 with the year, samplesize and state columns. 
+# Join them together using a full join, a right join and an inner join, joining by both year and state, 
+# compare the outputs from the three join types
+
+il <- ebird %>%
+        filter(state=="IL") %>%
+        select(state, species, presence, year)
+
+oh8 <- ebird %>%
+        filter(year==2008) %>%
+        select(year, state, samplesize)
+
+full_join(il, oh8, by=c("year","state"))
+right_join(il, oh8, by=c("year","state"))
+inner_join(il, oh8, by=c("year","state"))
+
+
+########################################
+## Challenge
+##########################################
 
 # Calculate the mean presence in 2010
 # of 2 randomly selected a_states 

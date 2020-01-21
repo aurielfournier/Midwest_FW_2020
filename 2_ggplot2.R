@@ -293,7 +293,7 @@ ggplot(data=abird,
            group=state, color=state)) +
   geom_line() + 
   facet_wrap(~state, ncol=2)+
-  ylab("Life Expectancy")+
+  ylab("samplesize")+
   theme(axis.text.x = element_text(size = 15, ang=90, color = "purple"), 
         axis.text.y = element_text(size = 2, color = "red"), 
         axis.title.y = element_text(size = 20), 
@@ -350,14 +350,14 @@ ggplot(data=abird,
 ## Saving, Stacking and Rearranging Graphs 
 ###################################
 
-(one <-   ggplot(data=abird, 
+one <-   ggplot(data=abird, 
                aes(x=year, y=samplesize, group=state)) + 
   geom_line()+
-        theme(axis.text.x=element_text(ang=90)))
+        theme(axis.text.x=element_text(ang=90))
 
-(two <- ggplot(data=abird, 
+two <- ggplot(data=abird, 
              aes(x=samplesize, y=presence)) + 
-    geom_point())
+    geom_point()
 
 
 left <- plot_grid(one, two, nrow=2, align="hv")
