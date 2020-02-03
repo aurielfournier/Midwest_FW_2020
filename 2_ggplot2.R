@@ -50,9 +50,9 @@ ggplot(data = abird,
 # For the second argument we passed in the `aes` function, which
 # tells `ggplot` how variables in the **data** map to *aesthetic* properties of
 # the figure, in this case the **x** and **y** variables. 
-# Here we told `ggplot` we want to plot the "gdpPercap" column of the gapminder 
-# data frame on the x-axis, and the "lifeExp" column on the y-axis. 
-# Notice that we didn't need to explicitly pass `aes` these columns (e.g. `x = gapminder[, "gdpPercap"]`), this is because `ggplot` is smart enough to know to look in the **data** for that column!
+# Here we told `ggplot` we want to plot the "year" column of the abird
+# data frame on the x-axis, and the "samplesize" column on the y-axis. 
+# Notice that we didn't need to explicitly pass `aes` these columns (e.g. `x = abird[, "year"]`), this is because `ggplot` is smart enough to know to look in the **data** for that column!
 
 # What do we need to change to look at how sample size changes over time?  
 
@@ -62,13 +62,21 @@ ggplot(data = abird,
 
 
 
+
+
+
+
+
 ### Challenge 2 
 
 # In the previous examples and challenge we've used the `aes` function to tell
 # the scatterplot **geom** about the **x** and **y** locations of each point.
 # Another *aesthetic* property we can modify is the point *color*. Modify the
-# code from the previous challenge to **color** the points by the "continent"
+# code from the previous challenge to **color** the points by the "state"
 # column. What trends do you see in the data? Are they what you expected?
+
+
+
 
 ggplot(data = abird, 
        aes(x = year, y = samplesize,
@@ -86,9 +94,9 @@ ggplot(data = abird,
   
 ggplot(data = abird, 
        aes(x=year, y=samplesize)) +
-  geom_line()
+  geom_line(aes(group=state))
 
-#Instead of adding a `geom_point` layer, we've added a `geom_line` layer. 
+# Instead of adding a `geom_point` layer, we've added a `geom_line` layer. 
 # but this probably doesn't look the way we expect
 # since we have the lines colored by continent, there is one line per continent,
 # so all the countries in that continent are merged together
@@ -115,8 +123,10 @@ ggplot(data = abird,
   
 ggplot(data = abird, 
        aes(x=year, y=samplesize)) +
-  geom_line(aes(color=state)) + 
-  geom_point()
+   geom_point()+
+  geom_line(aes(color=state))+
+  scale_x_continuous(breaks=c(2007,2009,2011,2013,2015,2017))
+
 
 # In this example, the *aesthetic* mapping of **color** has been moved from the
 # global plot options in `ggplot` to the `geom_line` layer so it no longer applies
@@ -125,9 +135,10 @@ ggplot(data = abird,
 
 # Switch the order of the point and line layers from the previous example. What happened?
 
-  ## Transformations and statistics
+
+## Transformations and statistics
   
-#  ggplot also makes it easy to overlay statistical models over the data. To
+# ggplot also makes it easy to overlay statistical models over the data. To
 # demonstrate we'll go back to our first example:
 
 ggplot(data = abird, 
@@ -136,8 +147,7 @@ ggplot(data = abird,
            color=state)) +
   geom_point()
 
-# Currently it's hard to see the relationship between the points due to some strong
-# outliers in GDP per capita. We can change the scale of units on the x axis using
+# We can change the scale of units on the x axis using
 # the *scale* functions. These control the mapping between the data values and
 # visual values of an aesthetic. We can also modify the transparency  of the
 # points, using the *alpha* funtion, which is especially helpful when you have
@@ -150,11 +160,10 @@ ggplot(data = abird,
   geom_point() + 
   scale_x_log10()  
 
-# The `log10` function applied a transformation to the values of the gdpPercap
+# The `log10` function applied a transformation to the values of the presence
 # column before rendering them on the plot, so that each multiple of 10 now only
-# corresponds to an increase in 1 on the transformed scale, e.g. a GDP per capita
-# of 1,000 is now 3 on the y axis, a value of 10,000 corresponds to 4 on the y
-# axis and so on. This makes it easier to visualise the spread of data on the
+# corresponds to an increase in 1 on the transformed scale
+# This makes it easier to visualise the spread of data on the
 # x-axis.
 
 # We can fit a simple relationship to the data by adding another layer,
@@ -186,6 +195,7 @@ ggplot(data = abird,
 ggplot(data = abird, 
        aes(x = samplesize, y = presence)) +
   geom_point(color="red", size=2) 
+
 ## Challenge 4b 
 #
 # Modify your solution  that the points are now a different shape and are colored by state.
@@ -202,15 +212,14 @@ ggplot(data = abird,
 
 # Earlier we visualised the change in life expectancy over time across all
 # countries in one plot. Alternatively, we can split this out over multiple panels
-# by adding a layer of **facet** panels. Focusing only on those countries with
-# names that start with the letter "A" or "Z".
+# by adding a layer of **facet** panels. 
 
 ggplot(data=abird, 
        aes(x = year, 
            y = samplesize, 
            group=state, color=state)) +
   geom_line() + 
-  facet_wrap(~state, ncol=2)
+  facet_wrap(~state, ncol=2, scale="free_y")
 
 # The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 # (~). This tells R to draw a panel for each unique value in the country column
@@ -220,7 +229,7 @@ ggplot(data=abird,
 
 # To clean this figure up for a publication we need to change some of the text
 # elements. The x-axis is too cluttered, and the y axis should read
-# "Life expectancy", rather than the column name in the data frame.
+# "Sample size", rather than the column name in the data frame.
 
 # We can do this by adding a couple of different layers. The **theme** layer
 # controls the axis text, and overall text size, and there are special layers

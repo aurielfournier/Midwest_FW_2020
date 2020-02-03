@@ -22,7 +22,7 @@ library(ggplot2)
 
 # discuss eBird data
 
-ebird <- read.csv("eBird_workshop.csv")
+ebird <- read.csv("eBird_workshop.csv") # the same line
 
 # Explain how to leave comments 
 
@@ -92,7 +92,7 @@ ebird %>%
 
 ebird %>% 
           group_by(state, year) %>%
-          summarize(mean=mean(presence))
+          summarize(mean=mean(samplesize))
 
 #########################################
 ### -- CHALLENGE
@@ -100,6 +100,23 @@ ebird %>%
 
 # What is the median samplesize for 
 # Arizona, Alaska, Arkansas and Alabama after 2014?
+
+# AZ AK AR AL 
+
+ebird %>% 
+  filter(year>2014, state %in% a_states)
+  filter(state=="AK"|state=="AR"|state=="AZ"|state=="AL") %>%
+  #group_by(state) %>% 
+  summarize(median = median(samplesize))
+
+
+
+
+
+
+
+
+
 
 new_data <- ebird %>% 
   filter(state %in% a_states,
@@ -114,8 +131,6 @@ new_data <- ebird %>%
 #########################
 ## MUTATE
 #########################
-
-colors <- c("red","green")
 
 mebird <- ebird %>%  
   mutate(a_state = ifelse(state %in% a_states, 1, 0),
@@ -139,8 +154,8 @@ mebird %>%
 # or
 
 mebird %>% 
-  separate(year, sep=c(2), 
-           into=c("century","endpart"),
+  separate(year, sep=c(2,3), 
+           into=c("century","middle","endpart"),
            remove=FALSE) %>%
   head()
 
@@ -202,6 +217,15 @@ inner_join(ebird1, ebird2, by=c("year","species","state")) %>% head()
 # Join them together using a full join, a right join and an inner join, joining by both year and state, 
 # compare the outputs from the three join types
 
+
+
+
+
+
+
+
+
+
 il <- ebird %>%
         filter(state=="IL") %>%
         select(state, species, presence, year)
@@ -213,6 +237,9 @@ oh8 <- ebird %>%
 full_join(il, oh8, by=c("year","state"))
 right_join(il, oh8, by=c("year","state"))
 inner_join(il, oh8, by=c("year","state"))
+
+
+## depending on time skip second challenge
 
 
 ########################################
